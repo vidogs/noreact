@@ -161,13 +161,13 @@ var Debug = {
 };
 // lib/utils.ts
 var componentsNodes = {};
-var nextElementId = 0;
+var nextElementId = 1;
 function getNextComponentId() {
     var id = nextElementId;
     nextElementId++;
     return id;
 }
-var nextContextId = 0;
+var nextContextId = 1;
 function getNextContextId() {
     var id = nextContextId;
     nextContextId++;
@@ -273,10 +273,6 @@ function attach(root, component) {
     var nodes = component.render();
     var fragment = createDocumentFragment(nodes);
     root.appendChild(fragment);
-    componentsNodes[component.id] = [
-        component,
-        nodes
-    ];
 }
 // lib/TextComponent.ts
 var TextComponent = /*#__PURE__*/ function() {
@@ -430,8 +426,8 @@ var FunctionComponent = /*#__PURE__*/ function() {
                 if (Debug.isRenderDebug) {
                     console.group("[RENDER]", this.id, "[FUNCTION]", "with props", this.props);
                 }
-                var functionResult = this.func(this.props);
                 hooksState.enterState(this);
+                var functionResult = this.func(this.props);
                 var nodes = functionResult.render();
                 hooksState.exitState();
                 componentsNodes[this.id] = [
@@ -641,7 +637,7 @@ function useState(initialValue) {
     if (!hooksState.states[component.id]) {
         hooksState.states[component.id] = {};
     }
-    if (!hooksState.states[component.id][hookId]) {
+    if (hooksState.states[component.id][hookId] === void 0) {
         hooksState.states[component.id][hookId] = initialValue;
     }
     if (Debug.isHooksDebug) {
@@ -679,7 +675,7 @@ function useEffect(effect, dependencies) {
                 hash,
                 effect
             ];
-            currentEffect();
+            effect();
         }
     }
 }
