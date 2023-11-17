@@ -153,8 +153,8 @@ __export(lib_exports, {
 module.exports = __toCommonJS(lib_exports);
 // lib/debug.ts
 var Debug = {
-    isRenderDebug: true,
-    isHooksDebug: true
+    isRenderDebug: false,
+    isHooksDebug: false
 };
 // lib/utils.ts
 var nextElementId = 0;

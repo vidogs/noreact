@@ -1,4 +1,4 @@
 export const Debug = {
-    isRenderDebug: true,
-    isHooksDebug: true,
+    isRenderDebug: false,
+    isHooksDebug: false,
 }

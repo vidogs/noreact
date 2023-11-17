@@ -1,7 +1,7 @@
 {
   "name": "@vidog/noreact",
   "description": "React-like framework with a small runtime",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "homepage": "https://https://github.com/vidogs/noreact",
   "license": "MIT",
   "author": "Denis Vidog <admin@doubleds.ru>",

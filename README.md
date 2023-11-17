@@ -1,11 +1,24 @@
-# Lightweight react-like framework
+# Lightweight react-like framework 
+
+- Typescript supported
+- JSX supported
+- States
+- Hooks
+- Re-render only updated components
+
+[Demo](https://github.com/vidogs/noreact-demo)
+
+## Supported react hooks
+- `useState`
+- `useEffect`
 
 ## Installation & Usage
 
 ### Install requirements for demo
 
 ```shell
-npm install --save-dev typescript ts-loader webpack webpack-cli @vidog/noreact
+npm install --save-dev typescript ts-loader webpack webpack-cli
+npm install @vidog/noreact
 ```
 
 *Here we use webpack, you can use whatever you want*
