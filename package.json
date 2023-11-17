@@ -1,0 +1,17 @@
+{
+  "name": "@vidog/noreact",
+  "description": "React-like framework with a small runtime",
+  "version": "0.0.12",
+  "homepage": "https://https://github.com/vidogs/noreact",
+  "license": "MIT",
+  "author": "Denis Vidog <admin@doubleds.ru>",
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
+  "scripts": {},
+  "devDependencies": {
+    "@swc/core": "^1.3.96",
+    "ts-loader": "^9.5.1",
+    "tsup": "^7.3.0",
+    "typescript": "^5.2.2"
+  }
+}
