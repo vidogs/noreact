@@ -134,6 +134,9 @@ __export(lib_exports, {
     attach: function() {
         return attach;
     },
+    createContext: function() {
+        return createContext;
+    },
     default: function() {
         return lib_default;
     },
@@ -157,11 +160,17 @@ var Debug = {
     isHooksDebug: false
 };
 // lib/utils.ts
-var nextElementId = 0;
 var componentsNodes = {};
+var nextElementId = 0;
 function getNextComponentId() {
     var id = nextElementId;
     nextElementId++;
+    return id;
+}
+var nextContextId = 0;
+function getNextContextId() {
+    var id = nextContextId;
+    nextContextId++;
     return id;
 }
 function calculateDependenciesHash(dependencies) {
@@ -304,12 +313,14 @@ var HooksState = /*#__PURE__*/ function() {
     "use strict";
     function HooksState() {
         _class_call_check(this, HooksState);
-        this.states = {};
-        this.references = {};
-        this.effects = {};
         this.currentComponent = void 0;
         this.nextHookIndex = 0;
         this.stack = [];
+        this.previousContexts = {};
+        this.states = {};
+        this.references = {};
+        this.effects = {};
+        this.contexts = {};
     }
     _create_class(HooksState, [
         {
@@ -343,6 +354,50 @@ var HooksState = /*#__PURE__*/ function() {
             }
         },
         {
+            key: "provideContext",
+            value: function provideContext(context, value) {
+                if (this.contexts[context.id]) {
+                    if (!this.previousContexts[context.id]) {
+                        this.previousContexts[context.id] = [];
+                    }
+                    var _this_contexts_context_id = _sliced_to_array(this.contexts[context.id], 2), currentValue = _this_contexts_context_id[0], currentContext = _this_contexts_context_id[1];
+                    this.previousContexts[context.id].push([
+                        currentValue,
+                        currentContext
+                    ]);
+                }
+                this.contexts[context.id] = [
+                    value,
+                    context
+                ];
+            }
+        },
+        {
+            key: "exitContext",
+            value: function exitContext(context) {
+                delete this.contexts[context.id];
+                if (this.previousContexts[context.id]) {
+                    if (this.previousContexts[context.id].length > 0) {
+                        var _this_previousContexts_context_id_pop = _sliced_to_array(this.previousContexts[context.id].pop(), 2), currentValue = _this_previousContexts_context_id_pop[0], currentContext = _this_previousContexts_context_id_pop[1];
+                        this.contexts[context.id] = [
+                            currentValue,
+                            currentContext
+                        ];
+                    }
+                }
+            }
+        },
+        {
+            key: "getContext",
+            value: function getContext(id) {
+                if (!this.contexts[id]) {
+                    console.error("no context provided", id);
+                    throw new Error("no context provided");
+                }
+                return this.contexts[id];
+            }
+        },
+        {
             key: "getCurrentState",
             value: function getCurrentState() {
                 var id = this.nextHookIndex;
@@ -365,8 +420,8 @@ var FunctionComponent = /*#__PURE__*/ function() {
         _class_call_check(this, FunctionComponent);
         this.isComponent = true;
         this.id = getNextComponentId();
-        this.func = func;
         this.props = props;
+        this.func = func;
     }
     _create_class(FunctionComponent, [
         {
@@ -427,8 +482,8 @@ var TagComponent = /*#__PURE__*/ function() {
         _class_call_check(this, TagComponent);
         this.isComponent = true;
         this.id = getNextComponentId();
-        this.tag = tag;
         this.props = props;
+        this.tag = tag;
     }
     _create_class(TagComponent, [
         {
@@ -537,6 +592,49 @@ var JSX = {
     }
 };
 var jsx_default = JSX;
+// lib/ProviderComponent.ts
+var ProviderComponent = /*#__PURE__*/ function() {
+    "use strict";
+    function ProviderComponent(context, props) {
+        _class_call_check(this, ProviderComponent);
+        this.id = getNextComponentId();
+        this.props = props;
+        this.context = context;
+    }
+    _create_class(ProviderComponent, [
+        {
+            key: "render",
+            value: function render() {
+                if (Debug.isRenderDebug) {
+                    console.group("[RENDER]", this.id, "[PROVIDER]", this.context, "[PROPS]", this.props);
+                }
+                hooksState.provideContext(this.context, this.props.value);
+                var nodes = renderComponents(this.props.children);
+                hooksState.exitContext(this.context);
+                if (Debug.isRenderDebug) {
+                    console.groupEnd();
+                }
+                return nodes;
+            }
+        }
+    ]);
+    return ProviderComponent;
+}();
+// lib/Context.ts
+function createContext(value) {
+    var context = {
+        id: getNextContextId(),
+        value: value,
+        Provider: void 0
+    };
+    var props = {
+        value: value
+    };
+    context.Provider = function(props2) {
+        return new ProviderComponent(context, props2);
+    };
+    return context;
+}
 // lib/useState.ts
 function useState(initialValue) {
     var _hooksState_getCurrentState = _sliced_to_array(hooksState.getCurrentState(), 2), component = _hooksState_getCurrentState[0], hookId = _hooksState_getCurrentState[1];
@@ -611,6 +709,7 @@ var lib_default = jsx_default;
 0 && (module.exports = {
     JSX: JSX,
     attach: attach,
+    createContext: createContext,
     onDomReady: onDomReady,
     useEffect: useEffect,
     useReference: useReference,

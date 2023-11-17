@@ -5,13 +5,13 @@ import {Debug} from "./debug";
 export class TagComponent implements Component {
     isComponent: boolean = true
     id: ComponentId
-    tag: keyof HTMLElementTagNameMap
     props: Props
+    tag: keyof HTMLElementTagNameMap
 
     constructor(tag: keyof HTMLElementTagNameMap, props: Props = {}) {
         this.id = getNextComponentId()
-        this.tag = tag
         this.props = props
+        this.tag = tag
     }
 
     render(): RenderResult {

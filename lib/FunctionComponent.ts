@@ -6,13 +6,13 @@ import {Debug} from "./debug";
 export class FunctionComponent implements Component {
     isComponent: boolean = true
     id: ComponentId
-    func: ComponentKeyFunction
     props: Props
+    func: ComponentKeyFunction
 
     constructor(func: ComponentKeyFunction, props: Props = {}) {
         this.id = getNextComponentId()
-        this.func = func
         this.props = props
+        this.func = func
     }
 
     render(): RenderResult {

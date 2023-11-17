@@ -6,11 +6,13 @@ import {TagComponent} from "./TagComponent";
 
 export type HookId = number
 
+export type ContextId = number
+
 export type ComponentId = number
 
 export type RenderResult = Node[]
 
-export type PropValue = string | number | Component[] | (() => void) | ((HTMLElement) => void)
+export type PropValue = string | number | Component[] | (() => void) | ((HTMLElement) => void) | any
 
 export type EffectCallback = () => void
 
@@ -27,7 +29,6 @@ export type Props = {
     children?: Component[]
     [id: string]: PropValue
 }
-
 
 export type ComponentKeyFunction = ((props: Props | undefined) => Component) | (() => Component)
 
@@ -96,6 +97,5 @@ declare module JSX {
     }
 }
 
-// @todo!!! context + useContext
 // @todo!!! redraw only changed elements (do not replace in DOM)
 // @todo!!! router

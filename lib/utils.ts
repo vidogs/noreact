@@ -1,14 +1,24 @@
-import {Component, ComponentId, RenderResult} from "./jsx";
+import {Component, ComponentId, ContextId, RenderResult} from "./jsx";
 import {Debug} from "./debug";
 
-let nextElementId: ComponentId = 0
-
 export const componentsNodes: { [key: ComponentId]: [Component, Node[]] } = {}
+
+let nextElementId: ComponentId = 0
 
 export function getNextComponentId(): ComponentId {
     const id = nextElementId
 
     nextElementId++
+
+    return id
+}
+
+let nextContextId: ContextId = 0
+
+export function getNextContextId(): ContextId {
+    const id = nextContextId
+
+    nextContextId++
 
     return id
 }
