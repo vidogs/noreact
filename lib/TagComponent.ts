@@ -16,10 +16,10 @@ export class TagComponent implements Component {
 
     render(): RenderResult {
         if (Debug.isRenderDebug) {
-            console.group('[RENDER]', this.id, '[TAG]', this.tag, 'with props', this.props)
+            console.group('[RENDER]', this.id, '[TAG]', this.tag, '[PROPS]', this.props)
         }
 
-        const childrenWithNodes: [Component, Node[]][] = []
+        const childrenWithNodes: [Component, RenderResult][] = []
 
         if (this.props.children) {
             for (let i in this.props.children) {

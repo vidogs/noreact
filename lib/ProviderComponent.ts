@@ -1,5 +1,5 @@
 import {Component, ComponentId, Props, RenderResult} from "./jsx";
-import {getNextComponentId, renderComponents} from "./utils";
+import {componentsNodes, getNextComponentId, renderComponents} from "./utils";
 import {Debug} from "./debug";
 import {hooksState} from "./HookState";
 import {Context} from "./Context";
@@ -30,6 +30,8 @@ export class ProviderComponent<T> implements Component {
         const nodes = renderComponents(this.props.children)
 
         hooksState.exitContext(this.context)
+
+        componentsNodes[this.id] = [this, nodes]
 
         if (Debug.isRenderDebug) {
             console.groupEnd()

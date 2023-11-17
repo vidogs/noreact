@@ -7,6 +7,7 @@ import {attach, onDomReady} from "../utils";
 import {effect_demo} from "./effect_demo";
 import {loading_demo} from "./loading_demo";
 import {patch_state_demo} from "./patch_state_demo";
+import {router_demo} from "./router_demo";
 
 const __just_to_compile__ = false
 
@@ -18,12 +19,13 @@ if(__just_to_compile__) {
     context_demo()
     effect_demo()
     loading_demo()
+    router_demo()
 }
 
 onDomReady(() => {
     const root = document.getElementById('root')
 
-    const app = hello_demo()
+    const app = router_demo()
 
     attach(root, app)
 })

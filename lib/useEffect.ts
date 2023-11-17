@@ -2,23 +2,23 @@ import {hooksState} from "./HookState";
 import {calculateDependenciesHash} from "./utils";
 
 export function useEffect(effect: () => void, dependencies: any[]) {
-    const [jsxElement, hookId] = hooksState.getCurrentState()
+    const [component, hookId] = hooksState.getCurrentState()
 
-    if (!hooksState.effects[jsxElement.id]) {
-        hooksState.effects[jsxElement.id] = {}
+    if (!hooksState.effects[component.id]) {
+        hooksState.effects[component.id] = {}
     }
 
     const hash = calculateDependenciesHash(dependencies)
 
-    if (!hooksState.effects[jsxElement.id][hookId]) {
-        hooksState.effects[jsxElement.id][hookId] = [hash, effect]
+    if (!hooksState.effects[component.id][hookId]) {
+        hooksState.effects[component.id][hookId] = [hash, effect]
 
         effect()
     } else {
-        const [currentHash, currentEffect] = hooksState.effects[jsxElement.id][hookId]
+        const [currentHash, currentEffect] = hooksState.effects[component.id][hookId]
 
         if(currentHash != hash) {
-            hooksState.effects[jsxElement.id][hookId] = [hash, effect]
+            hooksState.effects[component.id][hookId] = [hash, effect]
 
             effect() // @todo ?
         }

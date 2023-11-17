@@ -4,7 +4,7 @@ import {Context} from "./Context";
 
 class HooksState {
     private currentComponent: Component | undefined
-    private nextHookIndex: HookId
+    private hookIds: { [key: ComponentId]: HookId }
     private stack: [Component, HookId][]
     private previousContexts: { [key: ContextId]: [any, Context<any>][] }
 
@@ -15,7 +15,7 @@ class HooksState {
 
     constructor() {
         this.currentComponent = undefined
-        this.nextHookIndex = 0
+        this.hookIds = {}
         this.stack = []
         this.previousContexts = {}
 
@@ -25,24 +25,29 @@ class HooksState {
         this.contexts = {}
     }
 
-    enterState(element: Component) {
+    enterState(component: Component) {
+        if(!this.hookIds[component.id]) {
+            this.hookIds[component.id] = 0
+        }
+
         if (this.currentComponent) {
-            this.stack.push([this.currentComponent, this.nextHookIndex])
+            this.hookIds[this.currentComponent.id] = 0
+            this.stack.push([this.currentComponent, this.hookIds[component.id]])
         }
 
         if (Debug.isHooksDebug) {
-            console.group('[DISPATCHER]', element)
+            console.group('[DISPATCHER]', component)
         }
 
-        this.currentComponent = element
+        this.currentComponent = component
     }
 
     exitState() {
         if (this.stack.length > 0) {
-            [this.currentComponent, this.nextHookIndex] = this.stack.pop()
+            [this.currentComponent, this.hookIds[this.currentComponent.id]] = this.stack.pop()
         } else {
+            this.hookIds[this.currentComponent.id] = 0
             this.currentComponent = undefined
-            this.nextHookIndex = 0
         }
 
         if (Debug.isHooksDebug) {
@@ -87,9 +92,13 @@ class HooksState {
     }
 
     getCurrentState(): [Component, HookId] {
-        const id = this.nextHookIndex
+        if(!this.hookIds[this.currentComponent.id]) {
+            this.hookIds[this.currentComponent.id] = 0
+        }
 
-        this.nextHookIndex++
+        const id = this.hookIds[this.currentComponent.id]
+
+        this.hookIds[this.currentComponent.id]++
 
         return [this.currentComponent, id]
     }

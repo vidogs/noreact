@@ -5,18 +5,18 @@ import {Debug} from "./debug";
 export class TextComponent implements Component {
     isComponent: boolean = true
     id: ComponentId
-    text: string
     props: Props
+    text: string
 
     constructor(text: string, props: Props = {}) {
         this.id = getNextComponentId()
-        this.text = text
         this.props = props
+        this.text = text
     }
 
     render(): RenderResult {
         if (Debug.isRenderDebug) {
-            console.group('[RENDER]', this.id, '[TEXT]', this.text, 'with props', this.props)
+            console.group('[RENDER]', this.id, '[TEXT]', this.text, '[PROPS]', this.props)
         }
 
         const textNode = document.createTextNode(this.text)

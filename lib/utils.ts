@@ -2,7 +2,7 @@ import {Component, ComponentId, ContextId, RenderResult} from "./jsx";
 import {Debug} from "./debug";
 import {hooksState} from "./HookState";
 
-export const componentsNodes: { [key: ComponentId]: [Component, Node[]] } = {}
+export const componentsNodes: { [key: ComponentId]: [Component, RenderResult] } = {}
 
 let nextElementId: ComponentId = 1
 
@@ -29,10 +29,12 @@ export function calculateDependenciesHash(dependencies: any[]): string {
 
     let result = ""
 
-    for (let i in dependencies) {
-        const dependency = dependencies[i]
+    if(dependencies) {
+        for (let i in dependencies) {
+            const dependency = dependencies[i]
 
-        result += dependency.toString()
+            result += dependency ? dependency.toString() : 'undefined'
+        }
     }
 
     return result
@@ -50,6 +52,10 @@ export function createDocumentFragment(nodes: Node[]): DocumentFragment {
 
 export function renderComponents(elements: Component[]): RenderResult {
     const children = []
+
+    if(!elements) {
+        return children
+    }
 
     for (let i in elements) {
         children.push(...renderComponent(elements[i]))
@@ -84,19 +90,19 @@ export function renderComponent(element: Component): RenderResult {
     return children
 }
 
-export function reRenderElement(component: Component) {
+export function updateComponent(component: Component) {
     if (!componentsNodes[component.id]) {
-        console.error('no element to re-render in DOM storage', component.id)
+        console.warn('no component to update in DOM storage', component.id)
 
-        throw new Error("no element to re-render in DOM storage")
+        return
     }
 
     const [_, nodes] = componentsNodes[component.id]
 
     if (nodes.length < 1) {
-        console.error('no nodes to re-render in DOM storage', component.id)
+        console.warn('no nodes to update in DOM storage', component.id)
 
-        throw new Error("no nodes to re-render in DOM storage")
+        return
     }
 
     const firstNode = nodes[0]
@@ -127,7 +133,9 @@ export function reRenderElement(component: Component) {
         }
     }
 
-    firstNode.parentElement.replaceChild(fragment, firstNode)
+    if(firstNode.parentElement) {
+        firstNode.parentElement.replaceChild(fragment, firstNode)
+    }
 
     removeNodes(component)
 
@@ -147,6 +155,14 @@ export function onDomReady(cb: Function): void {
             cb()
         })
     }
+}
+
+export function onHashChange(cb: (Event) => void): void {
+    onDomReady(() => {
+        window.addEventListener('hashchange', cb)
+
+        cb(undefined)
+    })
 }
 
 export function attach(root: HTMLElement, component: Component) {

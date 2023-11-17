@@ -1,5 +1,5 @@
 import {hooksState} from "./HookState";
-import {reRenderElement} from "./utils";
+import {updateComponent} from "./utils";
 import {Debug} from "./debug";
 
 export function useState<T>(initialValue: T): [T, (data: T) => void] {
@@ -24,7 +24,7 @@ export function useState<T>(initialValue: T): [T, (data: T) => void] {
 
         hooksState.states[component.id][hookId] = newValue
 
-        reRenderElement(component)
+        updateComponent(component)
     }
 
     return [hooksState.states[component.id][hookId], set]

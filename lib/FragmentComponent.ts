@@ -14,7 +14,7 @@ export class FragmentComponent implements Component {
 
     render(): RenderResult {
         if (Debug.isRenderDebug) {
-            console.group('[RENDER]', this.id, '[FRAGMENT]', 'with props', this.props)
+            console.group('[RENDER]', this.id, '[FRAGMENT]', '[PROPS]', this.props)
         }
 
         const nodes = renderComponents(this.props.children)

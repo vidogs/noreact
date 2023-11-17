@@ -16,10 +16,6 @@ export function createContext<T>(value: T): Context<T> {
         Provider: undefined,
     }
 
-    const props: ProviderComponentProps<T> = {
-        value: value,
-    }
-
     context.Provider = (props: ProviderComponentProps<T>) => {
         return new ProviderComponent<T>(context, props)
     }

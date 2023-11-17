@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "strict": false,
         "module": "commonjs",
         "target": "ES5",
         "rootDir": "lib",

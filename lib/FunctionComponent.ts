@@ -17,14 +17,18 @@ export class FunctionComponent implements Component {
 
     render(): RenderResult {
         if (Debug.isRenderDebug) {
-            console.group('[RENDER]', this.id, '[FUNCTION]', 'with props', this.props)
+            console.group('[RENDER]', this.id, '[FUNCTION]', '[PROPS]', this.props)
         }
 
         hooksState.enterState(this)
 
         const functionResult = this.func(this.props)
 
-        const nodes = functionResult.render()
+        let nodes: RenderResult
+
+        if(functionResult) {
+            nodes = functionResult.render()
+        }
 
         hooksState.exitState()
 
