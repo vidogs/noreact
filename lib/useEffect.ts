@@ -20,7 +20,7 @@ export function useEffect(effect: () => void, dependencies: any[]) {
         if(currentHash != hash) {
             hooksState.effects[jsxElement.id][hookId] = [hash, effect]
 
-            currentEffect()
+            effect() // @todo ?
         }
     }
 }

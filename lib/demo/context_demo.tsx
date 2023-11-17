@@ -2,9 +2,8 @@ import JSX from "../jsx";
 import {Context, createContext} from "../Context";
 import {Component} from "../jsx";
 import {useContext} from "../useContext";
-import {attach, onDomReady} from "../utils";
 
-export function contextDemo() {
+export function context_demo(): Component {
     const MyContext: Context<number> = createContext(100500)
 
     function ProviderDemo(): Component {
@@ -23,6 +22,9 @@ export function contextDemo() {
 
                     <MyContext.Provider value={1000-7}>
                         <ProviderDemo />
+                        <MyContext.Provider value={100000000}>
+                            <ProviderDemo />
+                        </MyContext.Provider>
                     </MyContext.Provider>
 
                     <ProviderDemo />
@@ -31,9 +33,5 @@ export function contextDemo() {
         )
     }
 
-    onDomReady(() => {
-        const root = document.getElementById('root')
-
-        attach(root, <App />);
-    })
+    return <App />
 }

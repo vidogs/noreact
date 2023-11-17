@@ -1,9 +1,10 @@
 import {Component, ComponentId, ContextId, RenderResult} from "./jsx";
 import {Debug} from "./debug";
+import {hooksState} from "./HookState";
 
 export const componentsNodes: { [key: ComponentId]: [Component, Node[]] } = {}
 
-let nextElementId: ComponentId = 0
+let nextElementId: ComponentId = 1
 
 export function getNextComponentId(): ComponentId {
     const id = nextElementId
@@ -13,7 +14,7 @@ export function getNextComponentId(): ComponentId {
     return id
 }
 
-let nextContextId: ContextId = 0
+let nextContextId: ContextId = 1
 
 export function getNextContextId(): ContextId {
     const id = nextContextId
@@ -154,6 +155,4 @@ export function attach(root: HTMLElement, component: Component) {
     const fragment = createDocumentFragment(nodes)
 
     root.appendChild(fragment)
-
-    componentsNodes[component.id] = [component, nodes]
 }

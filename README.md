@@ -6,11 +6,15 @@
 - Hooks
 - Re-render only updated components
 
-[Demo](https://github.com/vidogs/noreact-demo)
+[Demo project](https://github.com/vidogs/noreact-demo)
 
-## Supported react hooks
+[Demos](./lib/demo)
+
+## Supported hooks
 - `useState`
 - `useEffect`
+- `useContext`
+- `useReference`
 
 ## Installation & Usage
 

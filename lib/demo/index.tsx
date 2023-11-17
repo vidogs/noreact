@@ -1,10 +1,29 @@
 import JSX from "../jsx";
-import {contextDemo} from "./context_demo";
-import {helloDemo} from "./hello_demo";
+import {state_demo} from "./state_demo";
+import {context_demo} from "./context_demo";
+import {hello_demo} from "./hello_demo";
+import {reference_demo} from "./reference_demo";
+import {attach, onDomReady} from "../utils";
+import {effect_demo} from "./effect_demo";
+import {loading_demo} from "./loading_demo";
+import {patch_state_demo} from "./patch_state_demo";
 
 const __just_to_compile__ = false
 
 if(__just_to_compile__) {
-    contextDemo()
-    helloDemo()
+    hello_demo()
+    state_demo()
+    patch_state_demo()
+    reference_demo()
+    context_demo()
+    effect_demo()
+    loading_demo()
 }
+
+onDomReady(() => {
+    const root = document.getElementById('root')
+
+    const app = hello_demo()
+
+    attach(root, app)
+})

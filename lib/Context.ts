@@ -1,6 +1,7 @@
 import {ContextId} from "./jsx";
 import {getNextContextId} from "./utils";
 import {ProviderComponent, ProviderComponentProps} from "./ProviderComponent";
+import {hooksState} from "./HookState";
 
 export interface Context<T> {
     id: ContextId

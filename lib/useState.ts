@@ -9,7 +9,7 @@ export function useState<T>(initialValue: T): [T, (data: T) => void] {
         hooksState.states[component.id] = {}
     }
 
-    if (!hooksState.states[component.id][hookId]) {
+    if (hooksState.states[component.id][hookId] === undefined) {
         hooksState.states[component.id][hookId] = initialValue
     }
 

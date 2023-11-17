@@ -20,9 +20,9 @@ export class FunctionComponent implements Component {
             console.group('[RENDER]', this.id, '[FUNCTION]', 'with props', this.props)
         }
 
-        const functionResult = this.func(this.props)
-
         hooksState.enterState(this)
+
+        const functionResult = this.func(this.props)
 
         const nodes = functionResult.render()
 

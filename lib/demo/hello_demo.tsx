@@ -1,8 +1,7 @@
 import JSX from "../jsx";
 import {Component} from "../jsx";
-import {attach, onDomReady} from "../utils";
 
-export function helloDemo() {
+export function hello_demo(): Component {
     function App(): Component {
         return (
             <div>
@@ -11,9 +10,5 @@ export function helloDemo() {
         )
     }
 
-    onDomReady(() => {
-        const root = document.getElementById('root')
-
-        attach(root, <App />);
-    })
+    return <App />
 }
